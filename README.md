@@ -2,6 +2,8 @@
 
 A Tetris clone written in Go with an Outrun/synthwave aesthetic, featuring neon colors, 3D-styled blocks, and a retro-futuristic visual design.
 
+![Go Tetris Screenshot](screenshot.png)
+
 ## Features
 
 - Classic Tetris gameplay with all 7 tetromino pieces
