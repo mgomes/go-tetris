@@ -16,7 +16,7 @@ A Tetris clone written in Go with an Outrun/synthwave aesthetic, featuring neon 
 
 ## Prerequisites
 
-- Go 1.18 or higher
+- Go 1.20 or higher
 - C compiler (for CGO dependencies)
 - OpenGL 2.1 support
 
