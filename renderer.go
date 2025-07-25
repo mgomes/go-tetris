@@ -83,6 +83,9 @@ func (r *Renderer) DrawHeldPiece(piece *Piece) {
 	holdX := holdBoxX
 	holdY := holdBoxY
 	
+	// Draw "HOLD" label above the box
+	r.drawLabel(holdX+10, holdY-25, "HOLD", 0.0, 1.0, 1.0)
+	
 	// Draw neon cyan hold box border
 	gl.LineWidth(2.0)
 	gl.Color3f(0.0, 1.0, 1.0)
@@ -90,7 +93,7 @@ func (r *Renderer) DrawHeldPiece(piece *Piece) {
 	gl.Vertex2f(float32(holdX-10), float32(holdY-10))
 	gl.Vertex2f(float32(holdX+4*miniBlockSize+10), float32(holdY-10))
 	gl.Vertex2f(float32(holdX+4*miniBlockSize+10), float32(holdY+4*miniBlockSize+10))
-	gl.Vertex2f(float32(holdX-10), float32(holdY+4*20+10))
+	gl.Vertex2f(float32(holdX-10), float32(holdY+4*miniBlockSize+10))
 	gl.End()
 	gl.LineWidth(1.0)
 	
@@ -129,16 +132,21 @@ func (r *Renderer) DrawHeldPiece(piece *Piece) {
 
 func (r *Renderer) DrawUI(game *Game) {
 	// Draw score box
+	r.drawLabel(scoreBoxX+10, scoreBoxY-25, "SCORE", 0.0, 1.0, 0.5)
 	r.drawInfoBox(scoreBoxX, scoreBoxY, infoBoxWidth, infoBoxHeight, 0.0, 1.0, 0.5) // Neon green
 	r.drawNumber(scoreBoxX+10, scoreBoxY+20, game.Score, 0.0, 1.0, 0.5)
 	
 	// Draw level box
+	r.drawLabel(levelBoxX+10, levelBoxY-25, "LEVEL", 1.0, 0.5, 0.0)
 	r.drawInfoBox(levelBoxX, levelBoxY, infoBoxWidth, infoBoxHeight, 1.0, 0.5, 0.0) // Orange
 	r.drawNumber(levelBoxX+10, levelBoxY+20, game.Level, 1.0, 0.5, 0.0)
 	
 	// Draw next piece preview
 	nextX := nextBoxX
 	nextY := nextBoxY
+	
+	// Draw "NEXT" label
+	r.drawLabel(nextX+10, nextY-25, "NEXT", 1.0, 0.0, 1.0)
 	
 	// Draw neon magenta next box border
 	gl.LineWidth(2.0)
@@ -147,7 +155,7 @@ func (r *Renderer) DrawUI(game *Game) {
 	gl.Vertex2f(float32(nextX-10), float32(nextY-10))
 	gl.Vertex2f(float32(nextX+4*miniBlockSize+10), float32(nextY-10))
 	gl.Vertex2f(float32(nextX+4*miniBlockSize+10), float32(nextY+4*miniBlockSize+10))
-	gl.Vertex2f(float32(nextX-10), float32(nextY+4*20+10))
+	gl.Vertex2f(float32(nextX-10), float32(nextY+4*miniBlockSize+10))
 	gl.End()
 	gl.LineWidth(1.0)
 	
@@ -630,6 +638,123 @@ func (r *Renderer) drawDigit(x, y int, digit rune, red, green, blue float32) {
 		gl.End()
 	}
 	gl.LineWidth(1.0)
+}
+
+func (r *Renderer) drawLabel(x, y int, text string, red, green, blue float32) {
+	// Simple label rendering using small letters
+	gl.Color3f(red, green, blue)
+	gl.LineWidth(1.5)
+	
+	letterX := x
+	for _, ch := range text {
+		r.drawSmallLetter(letterX, y, ch)
+		letterX += 12
+	}
+	gl.LineWidth(1.0)
+}
+
+func (r *Renderer) drawSmallLetter(x, y int, letter rune) {
+	// Small 8x10 letters
+	switch letter {
+	case 'H':
+		gl.Begin(gl.LINES)
+		gl.Vertex2f(float32(x), float32(y))
+		gl.Vertex2f(float32(x), float32(y+10))
+		gl.Vertex2f(float32(x+8), float32(y))
+		gl.Vertex2f(float32(x+8), float32(y+10))
+		gl.Vertex2f(float32(x), float32(y+5))
+		gl.Vertex2f(float32(x+8), float32(y+5))
+		gl.End()
+	case 'O':
+		gl.Begin(gl.LINE_LOOP)
+		gl.Vertex2f(float32(x), float32(y))
+		gl.Vertex2f(float32(x+8), float32(y))
+		gl.Vertex2f(float32(x+8), float32(y+10))
+		gl.Vertex2f(float32(x), float32(y+10))
+		gl.End()
+	case 'L':
+		gl.Begin(gl.LINE_STRIP)
+		gl.Vertex2f(float32(x), float32(y))
+		gl.Vertex2f(float32(x), float32(y+10))
+		gl.Vertex2f(float32(x+8), float32(y+10))
+		gl.End()
+	case 'D':
+		gl.Begin(gl.LINE_STRIP)
+		gl.Vertex2f(float32(x), float32(y))
+		gl.Vertex2f(float32(x), float32(y+10))
+		gl.Vertex2f(float32(x+6), float32(y+10))
+		gl.Vertex2f(float32(x+8), float32(y+8))
+		gl.Vertex2f(float32(x+8), float32(y+2))
+		gl.Vertex2f(float32(x+6), float32(y))
+		gl.Vertex2f(float32(x), float32(y))
+		gl.End()
+	case 'N':
+		gl.Begin(gl.LINE_STRIP)
+		gl.Vertex2f(float32(x), float32(y+10))
+		gl.Vertex2f(float32(x), float32(y))
+		gl.Vertex2f(float32(x+8), float32(y+10))
+		gl.Vertex2f(float32(x+8), float32(y))
+		gl.End()
+	case 'E':
+		gl.Begin(gl.LINE_STRIP)
+		gl.Vertex2f(float32(x+8), float32(y))
+		gl.Vertex2f(float32(x), float32(y))
+		gl.Vertex2f(float32(x), float32(y+10))
+		gl.Vertex2f(float32(x+8), float32(y+10))
+		gl.End()
+		gl.Begin(gl.LINES)
+		gl.Vertex2f(float32(x), float32(y+5))
+		gl.Vertex2f(float32(x+6), float32(y+5))
+		gl.End()
+	case 'X':
+		gl.Begin(gl.LINES)
+		gl.Vertex2f(float32(x), float32(y))
+		gl.Vertex2f(float32(x+8), float32(y+10))
+		gl.Vertex2f(float32(x+8), float32(y))
+		gl.Vertex2f(float32(x), float32(y+10))
+		gl.End()
+	case 'T':
+		gl.Begin(gl.LINES)
+		gl.Vertex2f(float32(x), float32(y))
+		gl.Vertex2f(float32(x+8), float32(y))
+		gl.Vertex2f(float32(x+4), float32(y))
+		gl.Vertex2f(float32(x+4), float32(y+10))
+		gl.End()
+	case 'S':
+		gl.Begin(gl.LINE_STRIP)
+		gl.Vertex2f(float32(x+8), float32(y))
+		gl.Vertex2f(float32(x), float32(y))
+		gl.Vertex2f(float32(x), float32(y+5))
+		gl.Vertex2f(float32(x+8), float32(y+5))
+		gl.Vertex2f(float32(x+8), float32(y+10))
+		gl.Vertex2f(float32(x), float32(y+10))
+		gl.End()
+	case 'C':
+		gl.Begin(gl.LINE_STRIP)
+		gl.Vertex2f(float32(x+8), float32(y))
+		gl.Vertex2f(float32(x), float32(y))
+		gl.Vertex2f(float32(x), float32(y+10))
+		gl.Vertex2f(float32(x+8), float32(y+10))
+		gl.End()
+	case 'R':
+		gl.Begin(gl.LINE_STRIP)
+		gl.Vertex2f(float32(x), float32(y+10))
+		gl.Vertex2f(float32(x), float32(y))
+		gl.Vertex2f(float32(x+8), float32(y))
+		gl.Vertex2f(float32(x+8), float32(y+5))
+		gl.Vertex2f(float32(x), float32(y+5))
+		gl.End()
+		gl.Begin(gl.LINES)
+		gl.Vertex2f(float32(x+4), float32(y+5))
+		gl.Vertex2f(float32(x+8), float32(y+10))
+		gl.End()
+	case 'V':
+		gl.Begin(gl.LINE_STRIP)
+		gl.Vertex2f(float32(x), float32(y))
+		gl.Vertex2f(float32(x+4), float32(y+10))
+		gl.Vertex2f(float32(x+8), float32(y))
+		gl.End()
+	}
 }
 
 func (r *Renderer) SetupProjection() {

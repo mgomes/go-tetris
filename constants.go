@@ -30,9 +30,9 @@ const (
 	nextBoxX      = boardOffsetX + boardWidth*cellSize + 50
 	nextBoxY      = boardOffsetY + 200
 	scoreBoxX     = boardOffsetX + boardWidth*cellSize + 50
-	scoreBoxY     = boardOffsetY + 350
+	scoreBoxY     = boardOffsetY + 360  // Moved down slightly
 	levelBoxX     = boardOffsetX + boardWidth*cellSize + 50
-	levelBoxY     = boardOffsetY + 430
+	levelBoxY     = boardOffsetY + 470  // Moved down more to create space
 	infoBoxWidth  = 100
 	infoBoxHeight = 60
 	miniBlockSize = 20
